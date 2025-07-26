@@ -1,0 +1,22 @@
+<div class="toastr-container">
+  @for (toastr of toastrsArr(); track toastr.id) { @if (!preventDuplicates) {
+  <div class="toastr-message" [class]="toastr.type">
+    <div class="message-icon">
+      <img [src]="'img/' + toastr.type + '.svg'" alt="ícone do toastr" />
+    </div>
+    <div class="message-content">
+      <strong>{{ toastr.title }}</strong>
+      <br />
+      <strong>{{ toastr.message }}</strong>
+    </div>
+    @if (toastr.closeButton) {
+    <button class="close-button" (click)="toastr.onTap?.()">
+      <img src="img/close.svg" alt="ícone do toastr" />
+    </button>
+    } @if (toastr.progressBar) {
+    <div class="progress-bar"></div>
+
+    }
+  </div>
+  } }
+</div>
