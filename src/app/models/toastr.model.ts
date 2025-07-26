@@ -7,10 +7,10 @@ export class PrettyToastr {
 
   type!: ToastType;
 
-  tapToDismiss: boolean = true;
+  tapToDismiss: boolean = false;
   closeButton: boolean = true;
-  preventDuplicates: boolean = true;
-  progressBar: boolean = true;
+  preventDuplicates: boolean = false;
+  progressBar: boolean = false;
 
   timeOut: number = 5000;
   disableTimeOut: boolean = false;

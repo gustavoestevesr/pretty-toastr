@@ -6,17 +6,21 @@ import { PrettyToastr, ToastType } from '../models/toastr.model';
 })
 export class PrettyToasterService {
   private idCounter = 0;
-  preventDuplicates = false;
-  toastrs = signal<PrettyToastr[]>([]);
 
-  private showToastr(newToastr: PrettyToastr) {
+  private preventDuplicates = signal<boolean>(false);
+  private tapToDismiss = signal<boolean>(false);
+  private toastrs = signal<PrettyToastr[]>([]);
+
+  private showToast(newToastr: PrettyToastr) {
+    if (this.preventDuplicates() && this.toastrs().length > 0) return;
+
     this.toastrs.update((toastrs) => [...toastrs, newToastr]);
 
-    if (newToastr.timeOut > 0) {
-      setTimeout(() => {
-        this.clear(newToastr.id);
-      }, newToastr.timeOut);
-    }
+    if (newToastr.timeOut > 0) this.autoClear(newToastr.id, newToastr.timeOut);
+  }
+
+  private autoClear(id: number, delay: number) {
+    setTimeout(() => this.clear(id), delay);
   }
 
   private createToast(
@@ -35,7 +39,7 @@ export class PrettyToasterService {
 
   toast(type: ToastType, options: Partial<PrettyToastr>) {
     const toast = this.createToast(type, options);
-    this.showToastr(toast);
+    this.showToast(toast);
   }
 
   success(options: Partial<PrettyToastr>) {
@@ -60,5 +64,21 @@ export class PrettyToasterService {
 
   clear(id: number) {
     this.toastrs.update((toasts) => toasts.filter((t) => t.id !== id));
+  }
+
+  setPreventDuplicates(value: boolean) {
+    this.preventDuplicates.set(value);
+  }
+
+  setTapToDismiss(value: boolean) {
+    this.tapToDismiss.set(value);
+  }
+
+  get tapToDismissSignal() {
+    return this.tapToDismiss;
+  }
+
+  get toastrsSignal() {
+    return this.toastrs;
   }
 }

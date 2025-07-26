@@ -27,7 +27,7 @@
           <input type="number" formControlName="timeOut" />
         </div>
 
-        <div class="field">
+        <div class="field disable-timeout">
           <label>
             <input type="checkbox" formControlName="disableTimeOut" />
             Disable Timeout
@@ -66,11 +66,18 @@
       </div>
 
       <div class="row">
-        <button type="submit" [disabled]="toastrForm.invalid">
+        <button type="submit" class="submit" [disabled]="toastrForm.invalid">
           Open Toast
+        </button>
+        <button
+          type="button"
+          class="clear-all"
+          (click)="prettyToastrService.clearAll()"
+        >
+          Clear all
         </button>
       </div>
     </div>
-    <small style="text-align: end;">made by Gustavo Esteves 😁</small>
+    <small style="text-align: end">made by Gustavo Esteves 😁</small>
   </form>
 </main>
